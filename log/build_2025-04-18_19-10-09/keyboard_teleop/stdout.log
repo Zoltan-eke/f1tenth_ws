@@ -1,0 +1,45 @@
+running egg_info
+creating ../../build/keyboard_teleop/keyboard_teleop.egg-info
+writing ../../build/keyboard_teleop/keyboard_teleop.egg-info/PKG-INFO
+writing dependency_links to ../../build/keyboard_teleop/keyboard_teleop.egg-info/dependency_links.txt
+writing entry points to ../../build/keyboard_teleop/keyboard_teleop.egg-info/entry_points.txt
+writing requirements to ../../build/keyboard_teleop/keyboard_teleop.egg-info/requires.txt
+writing top-level names to ../../build/keyboard_teleop/keyboard_teleop.egg-info/top_level.txt
+writing manifest file '../../build/keyboard_teleop/keyboard_teleop.egg-info/SOURCES.txt'
+reading manifest file '../../build/keyboard_teleop/keyboard_teleop.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../../build/keyboard_teleop/keyboard_teleop.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ezo/f1tenth_ws/build/keyboard_teleop/build
+creating /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib
+creating /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop
+copying keyboard_teleop/keyboard_teleop_hold.py -> /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop
+copying keyboard_teleop/__init__.py -> /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop
+copying keyboard_teleop/keyboard_teleop_incremental.py -> /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop
+copying keyboard_teleop/teleop.py -> /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop
+running install
+running install_lib
+creating /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop
+copying /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop/keyboard_teleop_hold.py -> /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop
+copying /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop/__init__.py -> /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop
+copying /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop/keyboard_teleop_incremental.py -> /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop
+copying /home/ezo/f1tenth_ws/build/keyboard_teleop/build/lib/keyboard_teleop/teleop.py -> /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop
+byte-compiling /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop/keyboard_teleop_hold.py to keyboard_teleop_hold.cpython-310.pyc
+byte-compiling /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop/keyboard_teleop_incremental.py to keyboard_teleop_incremental.cpython-310.pyc
+byte-compiling /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop/teleop.py to teleop.cpython-310.pyc
+running install_data
+creating /home/ezo/f1tenth_ws/install/keyboard_teleop/share/ament_index
+creating /home/ezo/f1tenth_ws/install/keyboard_teleop/share/ament_index/resource_index
+creating /home/ezo/f1tenth_ws/install/keyboard_teleop/share/ament_index/resource_index/packages
+copying resource/keyboard_teleop -> /home/ezo/f1tenth_ws/install/keyboard_teleop/share/ament_index/resource_index/packages
+copying package.xml -> /home/ezo/f1tenth_ws/install/keyboard_teleop/share/keyboard_teleop
+creating /home/ezo/f1tenth_ws/install/keyboard_teleop/share/keyboard_teleop/config
+copying config/key_teleop.yaml -> /home/ezo/f1tenth_ws/install/keyboard_teleop/share/keyboard_teleop/config
+running install_egg_info
+Copying ../../build/keyboard_teleop/keyboard_teleop.egg-info to /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop-0.0.0-py3.10.egg-info
+running install_scripts
+Installing keyboard_teleop_hold script to /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/keyboard_teleop
+Installing keyboard_teleop_incremental script to /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/keyboard_teleop
+writing list of installed files to '/home/ezo/f1tenth_ws/build/keyboard_teleop/install.log'

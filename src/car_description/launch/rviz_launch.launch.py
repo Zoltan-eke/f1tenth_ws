@@ -113,20 +113,20 @@ def generate_launch_description():
         output="screen"
     )
 
-    # --- teleop_twist_keyboard node ---
-    teleop_twist_keyboard_node = Node(
-        package='teleop_twist_keyboard',
-        executable='teleop_twist_keyboard',
-        name='teleop_twist_keyboard',
-        output='screen',
-        remappings=[
-            ('/cmd_vel', '/my_ackermann/cmd_vel')  # Ellenőrizd, hogy ez a helyes topic név!
-        ],
-        parameters=[
-            {'scale_linear.x': 1.0},  # Ezeket is át lehetne adni a YAML-ből, ha akarod
-            {'scale_angular.z': 0.5},
-        ]
-    )
+    ## --- teleop_twist_keyboard node ---
+    #teleop_twist_keyboard_node = Node(
+    #    package='teleop_twist_keyboard',
+    #    executable='teleop_twist_keyboard',
+    #    name='teleop_twist_keyboard',
+    #    output='screen',
+    #    remappings=[
+    #        ('/cmd_vel', '/my_ackermann/cmd_vel')  # Ellenőrizd, hogy ez a helyes topic név!
+    #    ],
+    #    parameters=[
+    #        {'scale_linear.x': 1.0},  # Ezeket is át lehetne adni a YAML-ből, ha akarod
+    #        {'scale_angular.z': 0.5},
+    #    ]
+    #)
 
     delayed_ackermann_steering_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -155,5 +155,5 @@ def generate_launch_description():
         delay_for_spawners,
         delayed_ackermann_steering_spawner,
         delayed_joint_broadcaster_spawner,
-        teleop_twist_keyboard_node
+        #teleop_twist_keyboard_node
     ])

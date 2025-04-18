@@ -1,1 +1,20 @@
-/home/ezo/f1tenth_ws/build/car_description/config/ackermann_control.yaml
+controller_manager:
+  ros__parameters:
+    update_rate: 100 # Vezérlési frekvencia
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    ackermann_steering_controller:
+      type: ackermann_steering_controller/AckermannSteeringController
+
+ackermann_steering_controller:
+  ros__parameters:
+    use_stamped_vel: true
+    front_wheels_names: [right_steering_hinge_joint, left_steering_hinge_joint]  # A csuklók nevei (URDF-ből)
+    rear_wheels_names: [right_rear_wheel_joint, left_rear_wheel_joint]
+    front_wheel_track: 0.32
+    rear_wheel_track: 0.32
+    wheelbase: 0.235
+    front_wheels_radius: 0.05
+    rear_wheels_radius: 0.05
