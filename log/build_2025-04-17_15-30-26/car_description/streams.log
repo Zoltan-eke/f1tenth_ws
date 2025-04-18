@@ -1,0 +1,37 @@
+[0.488s] Invoking command in '/home/ezo/f1tenth_ws/src/car_description': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/ezo/f1tenth_ws/build/car_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/car_description build --build-base /home/ezo/f1tenth_ws/build/car_description/build install --record /home/ezo/f1tenth_ws/build/car_description/install.log --single-version-externally-managed install_data
+[0.676s] running egg_info
+[0.677s] writing ../../build/car_description/car_description.egg-info/PKG-INFO
+[0.677s] writing dependency_links to ../../build/car_description/car_description.egg-info/dependency_links.txt
+[0.677s] writing entry points to ../../build/car_description/car_description.egg-info/entry_points.txt
+[0.677s] writing requirements to ../../build/car_description/car_description.egg-info/requires.txt
+[0.677s] writing top-level names to ../../build/car_description/car_description.egg-info/top_level.txt
+[0.678s] reading manifest file '../../build/car_description/car_description.egg-info/SOURCES.txt'
+[0.679s] writing manifest file '../../build/car_description/car_description.egg-info/SOURCES.txt'
+[0.679s] running build
+[0.679s] running build_py
+[0.679s] running install
+[0.679s] running install_lib
+[0.680s] running install_data
+[0.680s] copying package.xml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description
+[0.680s] copying launch/rviz_launch.launch.py -> /home/ezo/f1tenth_ws/install/car_description/share/car_description
+[0.681s] creating /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[0.681s] copying urdf/material.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[0.681s] copying urdf/macros.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[0.681s] copying urdf/base_link.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[0.681s] creating /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[0.681s] copying meshes/steering_hinge.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[0.681s] copying meshes/wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[0.681s] copying meshes/right_wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[0.681s] copying meshes/chassis.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[0.682s] copying meshes/left_wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[0.682s] creating /home/ezo/f1tenth_ws/install/car_description/share/car_description/rviz
+[0.682s] copying rviz/racecar.rviz -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/rviz
+[0.682s] creating /home/ezo/f1tenth_ws/install/car_description/share/car_description/config
+[0.682s] copying config/car_params.yaml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/config
+[0.682s] copying config/ackermann_control.yaml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/config
+[0.682s] running install_egg_info
+[0.683s] removing '/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages/car_description-0.0.0-py3.10.egg-info' (and everything under it)
+[0.683s] Copying ../../build/car_description/car_description.egg-info to /home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages/car_description-0.0.0-py3.10.egg-info
+[0.684s] running install_scripts
+[0.699s] writing list of installed files to '/home/ezo/f1tenth_ws/build/car_description/install.log'
+[0.714s] Invoked command in '/home/ezo/f1tenth_ws/src/car_description' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/ezo/f1tenth_ws/build/car_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/car_description build --build-base /home/ezo/f1tenth_ws/build/car_description/build install --record /home/ezo/f1tenth_ws/build/car_description/install.log --single-version-externally-managed install_data

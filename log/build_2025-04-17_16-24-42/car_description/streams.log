@@ -1,0 +1,16 @@
+[0.503s] Invoking command in '/home/ezo/f1tenth_ws/build/car_description': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/ezo/f1tenth_ws/build/car_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ezo/f1tenth_ws/build/car_description/build --no-deps symlink_data
+[0.721s] running develop
+[0.863s] running egg_info
+[0.863s] writing car_description.egg-info/PKG-INFO
+[0.863s] writing dependency_links to car_description.egg-info/dependency_links.txt
+[0.863s] writing entry points to car_description.egg-info/entry_points.txt
+[0.864s] writing requirements to car_description.egg-info/requires.txt
+[0.864s] writing top-level names to car_description.egg-info/top_level.txt
+[0.865s] reading manifest file 'car_description.egg-info/SOURCES.txt'
+[0.866s] writing manifest file 'car_description.egg-info/SOURCES.txt'
+[0.867s] running build_ext
+[0.867s] Creating /home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages/car-description.egg-link (link to .)
+[0.867s] 
+[0.867s] Installed /home/ezo/f1tenth_ws/build/car_description
+[0.867s] running symlink_data
+[0.887s] Invoked command in '/home/ezo/f1tenth_ws/build/car_description' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/ezo/f1tenth_ws/build/car_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ezo/f1tenth_ws/build/car_description/build --no-deps symlink_data
