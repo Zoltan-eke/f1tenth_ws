@@ -155,7 +155,7 @@
         </plugin>
     </gazebo>
 
-    <!-- <transmission name="left_rear_trans">
+    <transmission name="left_rear_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="left_rear_wheel_joint">
           <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
@@ -197,11 +197,15 @@
           <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
           <mechanicalReduction>1</mechanicalReduction>
         </actuator>
-    </transmission>  -->
+    </transmission> 
 
     <ros2_control name="f1tenth_mock_hw" type="system">
       <hardware>
-        <plugin>mock_components/GenericSystem</plugin> 
+        <!-- A fake_components plugin integrálja a parancsokat és frissíti a joint state-eket -->
+        <plugin>fake_components/GenericSystem</plugin>
+        <param name="update_rate">100</param>         <!-- controller update Hz -->
+        <!-- Opcióként beállíthatod, hogy minden ciklusban publikáljon state-et -->
+        <param name="publish_state">true</param>
       </hardware>
 
         <!-- Hajtott hátsó kerekek -->

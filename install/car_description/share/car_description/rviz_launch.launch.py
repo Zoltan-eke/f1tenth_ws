@@ -88,7 +88,10 @@ def generate_launch_description():
                     #{'robot_description': robot_description}
                     ],  # Robot leírás
         remappings=[
-            ("~/robot_description", "/robot_description"), ],
+            ("~/robot_description", "/robot_description"),
+            ('/ackermann_steering_controller/odometry', '/odom'),
+            ('/ackermann_steering_controller/tf_odometry', '/tf'),
+            ],
         output="screen",
     )
 

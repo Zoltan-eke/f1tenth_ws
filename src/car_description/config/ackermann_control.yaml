@@ -8,13 +8,35 @@ controller_manager:
     ackermann_steering_controller:
       type: ackermann_steering_controller/AckermannSteeringController
 
+# ----------------------------------------------------------------------------
+# Paraméterek a kormányzó kontrollerhez
+# ----------------------------------------------------------------------------
 ackermann_steering_controller:
   ros__parameters:
-    use_stamped_vel: true
-    front_wheels_names: [right_steering_hinge_joint, left_steering_hinge_joint]  # A csuklók nevei (URDF-ből)
-    rear_wheels_names: [right_rear_wheel_joint, left_rear_wheel_joint]
-    front_wheel_track: 0.32
-    rear_wheel_track: 0.32
-    wheelbase: 0.235
+    reference_timeout: 2.0
+    front_steering: true
+    publish_odometry:  true           # engedélyezi a nav_msgs/Odometry-t
+    publish_tf:        true           # engedélyezi a odom->base_link TF-et
+    odom_frame_id:     odom          
+    base_frame_id:     base_link     
+    # Ha csak geometry_msgs/Twist-et publikálsz (teleop_twist_keyboard), állítsd false-ra
+    use_stamped_vel:   true
+
+    # Első (kormányzott) kerekek joint-nevei (URDF-ből)
+    front_wheels_names:
+      - left_steering_hinge_joint
+      - right_steering_hinge_joint
+
+    # Hátsó (meghajtott) kerekek joint-nevei (URDF-ből)
+    rear_wheels_names:
+      - left_rear_wheel_joint
+      - right_rear_wheel_joint
+
+    # Járműgeometria (méterben)
+    front_wheel_track: 0.32   # Első tengely szélessége
+    rear_wheel_track: 0.32    # Hátsó tengely szélessége
+    wheelbase: 0.235         # Tengelytáv
+
+    # Kerekek sugara (méterben)
     front_wheels_radius: 0.05
     rear_wheels_radius: 0.05
