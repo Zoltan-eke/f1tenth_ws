@@ -1,1 +1,266 @@
-/home/ezo/f1tenth_ws/build/car_description/urdf/base_link.xacro
+<?xml version="1.0"?>
+<robot name="racecar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find car_description)/urdf/macros.xacro" />
+
+    <!-- Paraméterek -->
+    <xacro:arg name="wheel_radius" default="0.05"/>
+    <xacro:arg name="wheel_width" default="0.045"/>
+    <xacro:arg name="wheel_separation" default="0.32"/>
+    <xacro:arg name="wheelbase" default="0.235"/>
+    <xacro:arg name="wheel_mass" default="0.3"/>
+    <xacro:arg name="chassis_mass" default="1.0"/>
+    <xacro:arg name="steering_hinge_mass" default="0.1"/>
+
+
+    <!-- Alap link -->
+    <link name="base_link"/>
+
+
+    <!-- Add the chassis with its joints -->
+    <link name="chassis">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://car_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="red" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://car_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="${chassis_mass}"/>
+            <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>    
+        </inertial>
+    </link>
+
+    <joint name="base_link_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 ${pi/2}" />
+        <parent link="base_link" />
+        <child link="chassis" />
+    </joint>
+
+<!-- Add the rear wheels with their joints -->
+    <link name="left_rear_wheel">
+        <inertial>
+            <xacro:wheels_inertial_params z_offset="0" />
+        </inertial>
+        <visual>
+            <xacro:wheel_geometry prefix="left_rear" />
+        </visual>
+        <collision>
+            <xacro:wheel_collision_geometry />
+        </collision>
+    </link>
+
+    <joint name="left_rear_wheel_joint" type="continuous">
+        <origin xyz="${wheelbase/2} ${wheel_separation/2} 0.02" rpy="${pi/2} 0 0" />
+        <parent link="chassis" />
+        <child link="left_rear_wheel" />
+        <axis xyz="0 0 1" />
+        <limit effort="10" velocity="100" />
+        <dynamics damping="0.5"/>
+    </joint>
+
+    <link name="right_rear_wheel">
+        <inertial>
+            <xacro:wheels_inertial_params z_offset="0" />
+        </inertial>
+        <visual>
+            <xacro:wheel_geometry prefix="right_rear" />
+        </visual>
+        <collision>
+            <xacro:wheel_collision_geometry />
+        </collision>
+    </link>
+
+    <joint name="right_rear_wheel_joint" type="continuous">
+        <origin xyz="${-wheelbase/2} ${wheel_separation/2} 0.02" rpy="${pi/2} 0 ${pi}" />
+        <parent link="chassis" />
+        <child link="right_rear_wheel" />
+        <axis xyz="0 0 1" />
+        <limit effort="10" velocity="100" />
+        <dynamics damping="0.5"/>
+    </joint>
+
+    <link name="left_steering_hinge">
+        <inertial>
+            <xacro:steering_hinge_inertial_params z_offset="0"/>
+        </inertial>
+        <visual>
+            <xacro:steering_hinge_geometry prefix="left" />
+        </visual>
+         <collision>
+              <xacro:steering_hinge_geometry prefix="left" />
+        </collision>
+    </link>
+
+    <joint name="left_steering_hinge_joint" type="revolute">
+        <origin xyz="${wheelbase/2} ${-wheel_separation/2} 0.02" rpy="0 0 0" />
+        <parent link="chassis" />
+        <child link="left_steering_hinge" />
+        <axis xyz="0 0 1" />
+        <limit lower="-0.785" upper="0.785" effort="5" velocity="5" />
+        <dynamics damping="1.0"/>
+    </joint>
+
+
+    <link name="right_steering_hinge">
+        <inertial>
+            <xacro:steering_hinge_inertial_params z_offset="0"/>
+        </inertial>
+        <visual>
+            <xacro:steering_hinge_geometry prefix="right" />
+        </visual>
+        <collision>
+            <xacro:steering_hinge_geometry prefix="right" />
+        </collision>
+    </link>
+
+    <joint name="right_steering_hinge_joint" type="revolute">
+        <origin xyz="${-wheelbase/2} ${-wheel_separation/2} 0.02" rpy="0 0 0" />
+        <parent link="chassis" />
+        <child link="right_steering_hinge" />
+        <axis xyz="0 0 1" />
+        <limit lower="-0.785" upper="0.785" effort="5" velocity="5" />
+        <dynamics damping="1.0"/>
+    </joint>
+
+    <link name="left_front_wheel">
+        <inertial>
+            <xacro:wheels_inertial_params z_offset="0"/>
+        </inertial>
+        <visual>
+            <xacro:wheel_geometry prefix="left_front" />
+        </visual>
+        <collision>
+           <xacro:wheel_collision_geometry />
+        </collision>
+    </link>
+
+    <joint name="left_front_wheel_joint" type="continuous">
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        <parent link="left_steering_hinge" />
+        <child link="left_front_wheel" />
+        <axis xyz="0 0 1" />
+        <limit effort="10" velocity="100" />
+    </joint>
+
+    <link name="right_front_wheel">
+        <inertial>
+           <xacro:wheels_inertial_params z_offset="0"/>
+        </inertial>
+        <visual>
+            <xacro:wheel_geometry prefix="right_front" />
+        </visual>
+        <collision>
+            <xacro:wheel_collision_geometry />
+        </collision>
+    </link>
+
+    <joint name="right_front_wheel_joint" type="continuous">
+        <origin xyz="0 0 0"  rpy="${pi/2} 0 ${pi}" />
+        <parent link="right_steering_hinge" />
+        <child link="right_front_wheel" />
+        <axis xyz="0 0 1" />
+        <limit effort="10" velocity="100"/>
+    </joint>
+
+
+    <xacro:include filename="$(find car_description)/urdf/material.xacro" />
+    
+
+    <transmission name="left_rear_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="left_rear_wheel_joint">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="left_rear_motor">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+      
+    <transmission name="right_rear_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="right_rear_wheel_joint">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="right_rear_motor">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+      
+    <transmission name="left_steering_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="left_steering_hinge_joint">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="left_steering_motor">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+      
+    <transmission name="right_steering_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="right_steering_hinge_joint">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="right_steering_motor">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission> 
+
+    <ros2_control name="f1tenth_mock_hw" type="system">
+      <hardware>
+        <!-- A fake_components plugin integrálja a parancsokat és frissíti a joint state-eket -->
+        <plugin>fake_components/GenericSystem</plugin>
+        <param name="update_rate">100</param>         <!-- controller update Hz -->
+        <!-- Opcióként beállíthatod, hogy minden ciklusban publikáljon state-et -->
+        <param name="publish_state">true</param>
+      </hardware>
+
+        <!-- Hajtott hátsó kerekek -->
+        <joint name="left_rear_wheel_joint">
+            <command_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="right_rear_wheel_joint">
+            <command_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <!-- Kormányzott első csuklók -->
+        <joint name="left_steering_hinge_joint">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="right_steering_hinge_joint">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <!-- Passzív első kerekek csak TF-re -->
+        <joint name="left_front_wheel_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="right_front_wheel_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+    </ros2_control>
+
+</robot>

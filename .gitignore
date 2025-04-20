@@ -1,0 +1,11 @@
+# build artefaktumok
+build/
+install/
+log/
+
+# rosbag adatok
+bags/
+
+# Python cache
+__pycache__/
+*.pyc
