@@ -1,0 +1,28 @@
+running develop
+running egg_info
+writing car_description.egg-info/PKG-INFO
+writing dependency_links to car_description.egg-info/dependency_links.txt
+writing entry points to car_description.egg-info/entry_points.txt
+writing requirements to car_description.egg-info/requires.txt
+writing top-level names to car_description.egg-info/top_level.txt
+reading manifest file 'car_description.egg-info/SOURCES.txt'
+writing manifest file 'car_description.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages/car-description.egg-link (link to .)
+
+Installed /home/ezo/f1tenth_ws/build/car_description
+running symlink_data
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/resource/car_description -> /home/ezo/f1tenth_ws/install/car_description/share/ament_index/resource_index/packages
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/package.xml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/launch/rviz_launch.launch.py -> /home/ezo/f1tenth_ws/install/car_description/share/car_description
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/urdf/material.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/urdf/macros.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/urdf/base_link.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/steering_hinge.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/right_wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/chassis.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/left_wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/rviz/racecar.rviz -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/rviz
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/config/car_params.yaml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/config
+symbolically linking /home/ezo/f1tenth_ws/build/car_description/config/ackermann_control.yaml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/config

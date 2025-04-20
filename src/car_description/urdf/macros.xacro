@@ -18,13 +18,7 @@
   <xacro:property name="steering_hinge_mass" value="$(arg steering_hinge_mass)" />
 
 <!-- chassis geometry-->
-<xacro:macro name="chassis_geometry">
-  <origin xyz="0 0 0" rpy="0 0 0" />
-  <geometry>
-    <mesh filename="package://car_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
-  </geometry>
-  <material name="red" />
-</xacro:macro>
+
 
 <!-- wheels geometry-->
 <xacro:macro name="wheel_geometry" params="prefix">

@@ -1,5 +1,3 @@
-LICENSE
-README.md
 package.xml
 setup.cfg
 setup.py
@@ -15,4 +13,11 @@ keyboard_teleop/__init__.py
 keyboard_teleop/keyboard_teleop_hold.py
 keyboard_teleop/keyboard_teleop_incremental.py
 keyboard_teleop/teleop.py
+keyboard_teleop.egg-info/PKG-INFO
+keyboard_teleop.egg-info/SOURCES.txt
+keyboard_teleop.egg-info/dependency_links.txt
+keyboard_teleop.egg-info/entry_points.txt
+keyboard_teleop.egg-info/requires.txt
+keyboard_teleop.egg-info/top_level.txt
+keyboard_teleop.egg-info/zip-safe
 resource/keyboard_teleop

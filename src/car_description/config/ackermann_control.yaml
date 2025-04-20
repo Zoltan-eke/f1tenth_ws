@@ -14,7 +14,7 @@ controller_manager:
 ackermann_steering_controller:
   ros__parameters:
     reference_timeout: 2.0
-    front_steering: true
+    
     publish_odometry:  true           # engedélyezi a nav_msgs/Odometry-t
     publish_tf:        true           # engedélyezi a odom->base_link TF-et
     odom_frame_id:     odom          

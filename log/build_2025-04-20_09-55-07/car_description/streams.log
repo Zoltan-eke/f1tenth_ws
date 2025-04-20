@@ -1,0 +1,30 @@
+[0.703s] Invoking command in '/home/ezo/f1tenth_ws/build/car_description': PYTHONPATH=/home/ezo/f1tenth_ws/build/car_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ezo/f1tenth_ws/build/car_description/build --no-deps symlink_data --force
+[0.916s] running develop
+[1.062s] running egg_info
+[1.062s] writing car_description.egg-info/PKG-INFO
+[1.062s] writing dependency_links to car_description.egg-info/dependency_links.txt
+[1.063s] writing entry points to car_description.egg-info/entry_points.txt
+[1.063s] writing requirements to car_description.egg-info/requires.txt
+[1.063s] writing top-level names to car_description.egg-info/top_level.txt
+[1.064s] reading manifest file 'car_description.egg-info/SOURCES.txt'
+[1.065s] writing manifest file 'car_description.egg-info/SOURCES.txt'
+[1.066s] running build_ext
+[1.066s] Creating /home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages/car-description.egg-link (link to .)
+[1.067s] 
+[1.067s] Installed /home/ezo/f1tenth_ws/build/car_description
+[1.067s] running symlink_data
+[1.067s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/resource/car_description -> /home/ezo/f1tenth_ws/install/car_description/share/ament_index/resource_index/packages
+[1.067s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/package.xml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description
+[1.067s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/launch/rviz_launch.launch.py -> /home/ezo/f1tenth_ws/install/car_description/share/car_description
+[1.067s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/urdf/material.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/urdf/macros.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/urdf/base_link.xacro -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/urdf
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/steering_hinge.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/right_wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/chassis.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/meshes/left_wheel.stl -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/meshes
+[1.068s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/rviz/racecar.rviz -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/rviz
+[1.069s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/config/car_params.yaml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/config
+[1.069s] symbolically linking /home/ezo/f1tenth_ws/build/car_description/config/ackermann_control.yaml -> /home/ezo/f1tenth_ws/install/car_description/share/car_description/config
+[1.099s] Invoked command in '/home/ezo/f1tenth_ws/build/car_description' returned '0': PYTHONPATH=/home/ezo/f1tenth_ws/build/car_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/car_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ezo/f1tenth_ws/build/car_description/build --no-deps symlink_data --force

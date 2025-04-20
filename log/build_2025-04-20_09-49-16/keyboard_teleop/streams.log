@@ -1,0 +1,25 @@
+[0.707s] Invoking command in '/home/ezo/f1tenth_ws/src/keyboard_teleop': PYTHONPATH=/home/ezo/f1tenth_ws/build/keyboard_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/keyboard_teleop build --build-base /home/ezo/f1tenth_ws/build/keyboard_teleop/build install --record /home/ezo/f1tenth_ws/build/keyboard_teleop/install.log --install-scripts $base/lib/keyboard_teleop --single-version-externally-managed install_data
+[0.894s] /usr/lib/python3/dist-packages/setuptools/dist.py:723: UserWarning: Usage of dash-separated 'script-dir' will not be supported in future versions. Please use the underscore name 'script_dir' instead
+[0.895s]   warnings.warn(
+[0.900s] running egg_info
+[0.901s] writing ../../build/keyboard_teleop/keyboard_teleop.egg-info/PKG-INFO
+[0.901s] writing dependency_links to ../../build/keyboard_teleop/keyboard_teleop.egg-info/dependency_links.txt
+[0.902s] writing entry points to ../../build/keyboard_teleop/keyboard_teleop.egg-info/entry_points.txt
+[0.902s] writing requirements to ../../build/keyboard_teleop/keyboard_teleop.egg-info/requires.txt
+[0.902s] writing top-level names to ../../build/keyboard_teleop/keyboard_teleop.egg-info/top_level.txt
+[0.903s] reading manifest file '../../build/keyboard_teleop/keyboard_teleop.egg-info/SOURCES.txt'
+[0.903s] adding license file 'LICENSE'
+[0.903s] writing manifest file '../../build/keyboard_teleop/keyboard_teleop.egg-info/SOURCES.txt'
+[0.904s] running build
+[0.904s] running build_py
+[0.904s] running install
+[0.904s] running install_lib
+[0.905s] running install_data
+[0.905s] running install_egg_info
+[0.906s] removing '/home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop-0.0.0-py3.10.egg-info' (and everything under it)
+[0.907s] Copying ../../build/keyboard_teleop/keyboard_teleop.egg-info to /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages/keyboard_teleop-0.0.0-py3.10.egg-info
+[0.907s] running install_scripts
+[0.923s] Installing keyboard_teleop_hold script to /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/keyboard_teleop
+[0.923s] Installing keyboard_teleop_incremental script to /home/ezo/f1tenth_ws/install/keyboard_teleop/lib/keyboard_teleop
+[0.923s] writing list of installed files to '/home/ezo/f1tenth_ws/build/keyboard_teleop/install.log'
+[0.939s] Invoked command in '/home/ezo/f1tenth_ws/src/keyboard_teleop' returned '0': PYTHONPATH=/home/ezo/f1tenth_ws/build/keyboard_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ezo/f1tenth_ws/install/keyboard_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/keyboard_teleop build --build-base /home/ezo/f1tenth_ws/build/keyboard_teleop/build install --record /home/ezo/f1tenth_ws/build/keyboard_teleop/install.log --install-scripts $base/lib/keyboard_teleop --single-version-externally-managed install_data

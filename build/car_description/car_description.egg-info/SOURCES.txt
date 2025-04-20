@@ -9,6 +9,13 @@ setup.py
 ../../build/car_description/car_description.egg-info/top_level.txt
 ../../build/car_description/car_description.egg-info/zip-safe
 car_description/__init__.py
+car_description.egg-info/PKG-INFO
+car_description.egg-info/SOURCES.txt
+car_description.egg-info/dependency_links.txt
+car_description.egg-info/entry_points.txt
+car_description.egg-info/requires.txt
+car_description.egg-info/top_level.txt
+car_description.egg-info/zip-safe
 config/ackermann_control.yaml
 config/car_params.yaml
 launch/rviz_launch.launch.py

@@ -4,3 +4,6 @@ source;share/keyboard_teleop/hook/pythonpath.sh
 source;share/keyboard_teleop/hook/ament_prefix_path.ps1
 source;share/keyboard_teleop/hook/ament_prefix_path.dsv
 source;share/keyboard_teleop/hook/ament_prefix_path.sh
+source;../../build/keyboard_teleop/share/keyboard_teleop/hook/pythonpath_develop.ps1
+source;../../build/keyboard_teleop/share/keyboard_teleop/hook/pythonpath_develop.dsv
+source;../../build/keyboard_teleop/share/keyboard_teleop/hook/pythonpath_develop.sh
