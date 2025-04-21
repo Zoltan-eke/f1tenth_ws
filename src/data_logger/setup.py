@@ -1,30 +1,35 @@
+import os
 from glob import glob
 from setuptools import find_packages, setup
 
-package_name = 'odom_logger'
+package_name = 'data_logger'
 
 setup(
     name=package_name,
     version='0.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
-            # package.xml telepítése
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-         # launch fájlok telepítése
-        ('share/' + package_name + '/launch', glob('launch/*.py')),
+            # minden launch fájl telepítése
+        ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
+        # a logged_file mappa üresen (majd itt jönnek a csv‑k)
+        ('share/' + package_name + '/logged_file/logged_from_rosbag', []),
+        ('share/' + package_name + '/logged_file/logged_from_sim', []),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='ezo',
     maintainer_email='zoltaneke@icloud.com',
-    description='ODOM logger package',
+    description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'save_odom = odom_logger.save_odom:main',
+            'save_odom = data_logger.save_odom:main',
+            'save_imu = data_logger.save_imu:main',
+            'save_joint_states = data_logger.save_joint_states:main',
         ],
     },
 )

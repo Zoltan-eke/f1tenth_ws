@@ -1,0 +1,4 @@
+ros2 launch data_logger data_logger_offline.launch.py \
+  bag_path:=/home/ezo/f1tenth_ws/bags/rosbag2_2025_03_18-15_37_52 \
+  start_offset:=47.0 \
+  output_dir:=/home/ezo/f1tenth_ws/src/data_logger/logged_file/logged_from_rosbag
