@@ -3,45 +3,62 @@ import rclpy
 from rclpy.node import Node
 from ackermann_msgs.msg import AckermannDriveStamped
 import csv
-import os
 
-class AckermannCmdLogger(Node):
+class SaveAckermannCmd(Node):
     def __init__(self):
-        super().__init__('save_ackermann_cmd')
+        # Node name should match the launch-executable
+        super().__init__('save_drive_cmd')
 
-        # Paraméterek betöltése
-        self.declare_parameter('ackermann_cmd_topic', '/ackermann_cmd')
-        self.declare_parameter('output_file', 'ackermann_cmd.csv')
-        topic = self.get_parameter('ackermann_cmd_topic').get_parameter_value().string_value
-        output_file = self.get_parameter('output_file').get_parameter_value().string_value
+        # Parameters for topic and output file
+        ack_topic_param = self.declare_parameter('ackermann_cmd_topic', '/drive')
+        output_file_param = self.declare_parameter('output_file', 'drive.csv')
 
-        # Kimeneti mappa létrehozása
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
-        self._f = open(output_file, 'w', newline='')
-        self._writer = csv.writer(self._f)
-        self._writer.writerow(['sec', 'nanosec', 'speed', 'steering_angle'])
+        ack_topic = ack_topic_param.get_parameter_value().string_value
+        output_file = output_file_param.get_parameter_value().string_value
 
-        self.get_logger().info(f"Logging {topic} into: {output_file}")
+        # Subscribe to AckermannDriveStamped topic
+        self.sub = self.create_subscription(
+            AckermannDriveStamped,
+            ack_topic,
+            self.cb,
+            10
+        )
 
-        # Feliratkozás a kiválasztott topikra
-        self.create_subscription(AckermannDriveStamped, topic, self._callback, 10)
+        # Open CSV file and write header
+        self.csvfile = open(output_file, 'w', newline='')
+        self.writer = csv.writer(self.csvfile)
+        self.writer.writerow(['sec', 'nanosec', 'speed', 'steering_angle'])
 
-    def _callback(self, msg: AckermannDriveStamped):
-        ts = msg.header.stamp
-        speed = msg.drive.speed
-        steering_angle = msg.drive.steering_angle
-        self._writer.writerow([ts.sec, ts.nanosec, speed, steering_angle])
-        self._f.flush()
+    def cb(self, msg: AckermannDriveStamped):
+        # Always use the ROS clock for timestamp, ignoring msg.header
+        now = self.get_clock().now().to_msg()
+        sec = now.sec
+        nanosec = now.nanosec
+
+        # Write timestamp and command values to CSV
+        self.writer.writerow([
+            sec,
+            nanosec,
+            msg.drive.speed,
+            msg.drive.steering_angle
+        ])
 
     def destroy_node(self):
-        self._f.close()
+        # Ensure the CSV file is closed
+        try:
+            self.csvfile.close()
+        except Exception:
+            pass
         super().destroy_node()
 
-def main(args=None):
-    rclpy.init(args=args)
-    node = AckermannCmdLogger()
+
+def main():
+    rclpy.init()
+    node = SaveAckermannCmd()
     try:
         rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
     finally:
         node.destroy_node()
         rclpy.shutdown()
