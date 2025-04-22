@@ -15,8 +15,8 @@ setup(
             # minden launch fájl telepítése
         ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
         # a logged_file mappa üresen (majd itt jönnek a csv‑k)
-        ('share/' + package_name + '/logged_file/logged_from_rosbag', []),
-        ('share/' + package_name + '/logged_file/logged_from_sim', []),
+        ('share/' + package_name + '/logged_file/raw', []),
+        ('share/' + package_name + '/logged_file/filtered', []),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -30,6 +30,7 @@ setup(
             'save_odom = data_logger.save_odom:main',
             'save_imu = data_logger.save_imu:main',
             'save_joint_states = data_logger.save_joint_states:main',
+            'save_ackermann_cmd = data_logger.save_ackermann_cmd:main',
         ],
     },
 )
