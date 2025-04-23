@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # CSV elérési út
-csv_path = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/raw/odom.csv'
+csv_path = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/filtered/filtered_odom.csv'
 
 # Beolvasás
 odom_df = pd.read_csv(csv_path)
@@ -15,8 +15,8 @@ odom_df['time'] = odom_df['sec'] + odom_df['nanosec'] * 1e-9
 odom_df['rel_time'] = odom_df['time'] - odom_df['time'].min()
 
 # Szűrés: csak a megadott időintervallum között
-t_min = 48.0   # másodperc
-t_max = 132.0  # másodperc
+t_min = 0.00   # másodperc 48
+t_max = 180.0  # másodperc 132
 filtered_df = odom_df[(odom_df['rel_time'] > t_min) & (odom_df['rel_time'] < t_max)]
 
 
