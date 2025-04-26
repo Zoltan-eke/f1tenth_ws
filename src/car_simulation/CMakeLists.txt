@@ -22,6 +22,7 @@ install(DIRECTORY
   launch
   config
   urdf
+  bags
   DESTINATION share/${PROJECT_NAME}
 )
 

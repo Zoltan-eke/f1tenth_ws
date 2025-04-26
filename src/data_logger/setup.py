@@ -17,6 +17,7 @@ setup(
         # a logged_file mappa üresen (majd itt jönnek a csv‑k)
         ('share/' + package_name + '/logged_file/raw', []),
         ('share/' + package_name + '/logged_file/filtered', []),
+        ('share/' + package_name + '/logged_file/simulated', []),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
