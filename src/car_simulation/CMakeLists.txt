@@ -8,14 +8,17 @@ endif()
 # --- Kötelező build tool
 find_package(ament_cmake REQUIRED)
 
+
 # --- Launchhoz és URDF-hez használt csomagok (futtatási időben kellenek)
 find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
 find_package(controller_manager REQUIRED)
 find_package(robot_state_publisher REQUIRED)
 find_package(joint_state_broadcaster REQUIRED)
 find_package(ackermann_steering_controller REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(xacro REQUIRED)
+find_package(ackermann_msgs REQUIRED)
 
 # --- Launch/config/urdf mappák telepítése
 install(DIRECTORY
@@ -24,6 +27,12 @@ install(DIRECTORY
   urdf
   bags
   DESTINATION share/${PROJECT_NAME}
+)
+
+### Telepítsük a Python scriptet is
+install(PROGRAMS
+    scripts/drive_replay.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

@@ -12,8 +12,10 @@
 
   <!-- Függőségek build és futás közben -->
   <depend>rclcpp</depend>
+  <depend>rclpy</depend>
   <depend>controller_manager</depend>
   <depend>car_description</depend>
+ 
 
   <!-- Ha szükséges: pluginlib, robot_state_publisher, stb. -->
   <depend>robot_state_publisher</depend>
@@ -21,7 +23,8 @@
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>rviz2</depend>
-
+  <depend>ackermann_msgs</depend>
+  
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

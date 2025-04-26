@@ -8,26 +8,36 @@ from nav_msgs.msg import Odometry
 class OdomSaver(Node):
     def __init__(self):
         super().__init__('save_odom')
-        # Paraméter deklarációk
-        self.declare_parameter('output_file', 'traj.csv')
-        output_file = self.get_parameter('output_file').value
+        # csak egyszer deklaráljuk a paramétert
+        from rclpy.exceptions import ParameterAlreadyDeclaredException
+        try:
+            self.declare_parameter('use_sim_time', True)
+        except ParameterAlreadyDeclaredException:
+            pass
 
-        # Kimeneti könyvtár létrehozása
-        out_dir = os.path.dirname(output_file) or '.'
-        os.makedirs(out_dir, exist_ok=True)
+        # Paraméter deklarációk:
+        self.declare_parameter('output_dir', '')
+        self.declare_parameter('output_filename', 'odom.csv')
+
+        # Paraméterek beolvasása
+        out_dir = self.get_parameter('output_dir').get_parameter_value().string_value
+        filename = self.get_parameter('output_filename').get_parameter_value().string_value
+        # Paraméterek ellenőrzése
+        if not out_dir:
+            raise RuntimeError("output_dir parameter is required")
+        self.filepath = os.path.join(out_dir, filename)
+        self.get_logger().info(f"Logging /odom into: {self.filepath}")
 
         # CSV fájl megnyitása és fejléc írása
-        self._f = open(output_file, 'w', newline='')
-        self._writer = csv.writer(self._f)
+        self.csvfile = open(self.filepath, 'w', newline='')
+        self._writer = csv.writer(self.csvfile)
         self._writer.writerow(['sec', 'nanosec',
                                'x', 'y', 'z',
-                               'qx', 'qy', 'qz', 'qw'])
-        self.get_logger().info(f'Logging /odom into: {output_file}')
+                               'qx', 'qy', 'qz', 'qw']),
 
         # Feliratkozás az /odom topicra
-        self.create_subscription(
-            Odometry,
-            '/odom',
+        self.sub = self.create_subscription(
+            Odometry, '/odom',
             self._odom_callback,
             10
         )
@@ -42,12 +52,12 @@ class OdomSaver(Node):
             q.x, q.y, q.z, q.w
         ])
         # Írjuk azonnal a lemezes cache-be
-        self._f.flush()
+        self.csvfile.flush()
 
     def destroy_node(self):
         # Fájl bezárása node leállításkor
         try:
-            self._f.close()
+            self.csvfile.close()
         except Exception:
             pass
         super().destroy_node()
