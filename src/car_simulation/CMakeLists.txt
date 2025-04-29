@@ -31,6 +31,7 @@ install(DIRECTORY
 
 ### Telepítsük a Python scriptet is
 install(PROGRAMS
+    scripts/ackermann_to_odom.py
     scripts/drive_replay.py
   DESTINATION lib/${PROJECT_NAME}
 )

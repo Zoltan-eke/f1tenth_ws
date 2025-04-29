@@ -7,7 +7,7 @@
     <xacro:arg name="wheel_radius" default="0.05"/>
     <xacro:arg name="wheel_width" default="0.045"/>
     <xacro:arg name="wheel_separation" default="0.32"/>
-    <xacro:arg name="wheelbase" default="0.235"/>
+    <xacro:arg name="wheelbase" default="0.9"/>
     <xacro:arg name="wheel_mass" default="0.3"/>
     <xacro:arg name="chassis_mass" default="1.0"/>
     <xacro:arg name="steering_hinge_mass" default="0.1"/>
