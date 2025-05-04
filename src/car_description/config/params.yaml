@@ -1,0 +1,27 @@
+ros__parameters:
+  B: 5.0
+  C: 2.25
+  C_f: 1000.0
+  C_lin: 150.0
+  C_r: 1000.0
+  D: 10.0
+  I_z: 0.128
+  c_roll: 0.013
+  cog_z: 0.045
+  drive_topic: /drive
+  front_ratio: 0.155/0.320
+  length: 0.568
+  liftcoeff_front: 0.0
+  liftcoeff_rear: 0.0
+  mass: 3.74
+  mue: 0.66
+  track_width_front: 0.1475
+  track_width_rear: 0.1475
+  v_max: 15.0
+  wheel_base: 0.32
+  wheel_diameter: 0.1068
+  wheel_radius: 0.0534
+  wheel_width: 0.045
+  wheelbase_front: 0.063
+  wheelbase_rear: 0.252
+  width: 0.296

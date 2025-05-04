@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # CSV elérési út
-csv_path = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/filtered/filtered_odom.csv'
+csv_path = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/simulated/sim_drive.csv'
 
 # Beolvasás
 odom_df = pd.read_csv(csv_path)

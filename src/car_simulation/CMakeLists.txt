@@ -19,13 +19,17 @@ find_package(ackermann_steering_controller REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(xacro REQUIRED)
 find_package(ackermann_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2_msgs REQUIRED)
 
 # --- Launch/config/urdf mappák telepítése
 install(DIRECTORY
   launch
   config
   urdf
-  bags
   DESTINATION share/${PROJECT_NAME}
 )
 

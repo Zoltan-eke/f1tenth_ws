@@ -1,130 +1,99 @@
 #!/usr/bin/env python3
 """
-Filter CSV files by method: manual time window or IMU jerk threshold.
-Saves filtered files into a 'filtered' subdirectory next to the 'raw' directory.
-Usage:
-  # Manual window:
-  python3 filter_csvs.py --method manual --t-min 48.0 --t-max 132.0
+filter_csvs.py
 
-  # Automatic IMU-based jerk detection:
-  python3 filter_csvs.py --method imu --j-threshold 0.2
+Offline szkript a "simulated" könyvtárban található
+sim_drive.csv, sim_odom.csv és sim_tf.csv fájlok
+időintervallumának összehangolására.
+
+Támogatja mind a relatív 'time' oszlopot, mind az abszolút
+'sec','nanosec' feldolgozást.
 """
-import argparse
-from pathlib import Path
-import pandas as pd
-import numpy as np
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description='Filter logger CSV files by time window or IMU jerk detection'
-    )
-    parser.add_argument(
-        '--input-dir', '-i',
-        type=Path,
-        default=Path.home() / 'f1tenth_ws' / 'src' / 'data_logger' / 'logged_file' / 'raw',
-        help='Directory containing raw CSV files'
-    )
-    parser.add_argument(
-        '--method',
-        choices=['manual', 'imu'],
-        required=True,
-        help='Filtering method: manual time window or IMU jerk threshold'
-    )
-    parser.add_argument(
-        '--t-min',
-        type=float,
-        help='Manual start time (s) relative to first timestamp'
-    )
-    parser.add_argument(
-        '--t-max',
-        type=float,
-        help='Manual stop time (s) relative to first timestamp'
-    )
-    parser.add_argument(
-        '--j-threshold',
-        type=float,
-        help='Jerk threshold (m/s^3) for IMU-based detection'
-    )
-    args = parser.parse_args()
-    if args.method == 'manual' and (args.t_min is None or args.t_max is None):
-        parser.error('Manual method requires --t-min and --t-max')
-    if args.method == 'imu' and args.j_threshold is None:
-        parser.error('IMU method requires --j-threshold')
-    return args
+import os, csv
 
+# --- PATHS: állítsd be a saját workspace-ed szerint ---
+WORKSPACE_ROOT = os.path.expanduser('~/f1tenth_ws')
+SIM_DIR        = os.path.join(WORKSPACE_ROOT,
+                              'src/data_logger/logged_file/simulated')
 
-def detect_time_window_imu(imu_csv: Path, j_threshold: float):
-    df = pd.read_csv(imu_csv)
-    # Absolute time in seconds
-    df['time'] = df['sec'] + df['nanosec'] * 1e-9
-    # Compute acceleration magnitude minus gravity
-    df['acc_mag'] = np.sqrt(df['ax']**2 + df['ay']**2 + df['az']**2) - 9.81
-    # Jerk = derivative of acceleration
-    dt_vals = df['time'].diff().fillna(method='bfill')
-    df['jerk'] = df['acc_mag'].diff().fillna(0) / dt_vals
-    # Indices where jerk exceeds threshold
-    idx = df.index[np.abs(df['jerk']) > j_threshold]
-    if idx.empty:
-        # Fallback to full range
-        return df['time'].iloc[0], df['time'].iloc[-1]
-    return df['time'].iloc[idx[0]], df['time'].iloc[idx[-1]]
+DRIVE_FILE = os.path.join(SIM_DIR, 'sim_drive.csv')
+ODOM_FILE  = os.path.join(SIM_DIR, 'sim_odom.csv')
+TF_FILE    = os.path.join(SIM_DIR, 'sim_tf.csv')
 
+ODOM_OUT = os.path.join(SIM_DIR, 'sim_odom_filt.csv')
+TF_OUT   = os.path.join(SIM_DIR, 'sim_tf_filt.csv')
+# ----------------------------------------------
 
-def filter_csv(file_path: Path, output_dir: Path, t0: float, t1: float) -> int:
-    df = pd.read_csv(file_path)
-    if 'sec' not in df.columns or 'nanosec' not in df.columns:
-        print(f"[!] Skipping {file_path.name}: no timestamp columns.")
-        return 0
-    # Compute absolute time
-    df['time'] = df['sec'] + df['nanosec'] * 1e-9
-    # Filter within window
-    df_filtered = df[(df['time'] >= t0) & (df['time'] <= t1)]
-    if df_filtered.empty:
-        print(f"[!] Warning: no data in {file_path.name} between {t0:.3f}s and {t1:.3f}s.")
-        print(f"    Original range: {df['time'].min():.3f}s–{df['time'].max():.3f}s")
-    # Determine edge tolerance based on sampling interval
-    dt_vals = df['time'].diff().dropna().values
-    if len(dt_vals):
-        median_dt = np.median(dt_vals)
-        edge_tol = median_dt * 2
-    else:
-        edge_tol = 1e-3  # default 1 ms
-    # Check for data near edges
-    near_start = df[(df['time'] >= t0 - edge_tol) & (df['time'] < t0 + edge_tol)]
-    near_stop  = df[(df['time'] > t1 - edge_tol)  & (df['time'] <= t1 + edge_tol)]
-    if near_start.empty or near_stop.empty:
-        print(f"[!] Warning: no data near window edges in {file_path.name} (tol={edge_tol:.3f}s)")
-    # Save filtered CSV
-    out_path = output_dir / f'filtered_{file_path.name}'
-    df_filtered.to_csv(out_path, index=False)
-    return len(df_filtered)
+def load_and_compute_times(path):
+    """
+    Beolvassa a CSV-t. Ha van 'time' oszlop, használja azt.
+    Ha nincs, de van 'sec','nanosec', akkor abból számolja:
+      abs_times = sec + nanosec*1e-9
+      rel_times = abs_times - abs_times[0]
+    Visszaadja: (rows, rel_times)
+    """
+    with open(path, 'r') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+    if not rows:
+        return [], []
 
+    # Ha van time oszlop, közvetlenül float-oljuk
+    if 'time' in rows[0]:
+        times = [float(r['time']) for r in rows]
+        return rows, times
+
+    # különben abs sec,nanosec → relatív time
+    if 'sec' in rows[0] and 'nanosec' in rows[0]:
+        abs_times = [float(r['sec']) + float(r['nanosec'])*1e-9 for r in rows]
+        t0 = abs_times[0]
+        rel = [t - t0 for t in abs_times]
+        # belerakjuk minden sorba a rel_time mezőt
+        for r, t in zip(rows, rel):
+            r['time'] = f"{t:.6f}"
+        return rows, rel
+
+    # nincs megfelelő oszlop
+    raise RuntimeError(f"{path}: nincs 'time' vagy 'sec','nanosec' oszlop")
+
+def filter_rows(rows, times, t_min, t_max):
+    """Kiszűri a sorokat, ahol t_min ≤ times[i] ≤ t_max."""
+    out = []
+    for r, t in zip(rows, times):
+        if t_min <= t <= t_max:
+            out.append(r)
+    return out
+
+def write_csv(path, rows):
+    """Kiírja a list of dicts-et, a fieldnames a keys() alapján."""
+    if not rows:
+        print(f"Üres a kimenet: {path}")
+        return
+    with open(path, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        writer.writeheader()
+        writer.writerows(rows)
+    print(f"Írva: {path} ({len(rows)} sor)")
 
 def main():
-    args = parse_args()
-    raw_dir = args.input_dir
-    filtered_dir = raw_dir.parent / 'filtered'
-    filtered_dir.mkdir(exist_ok=True)
+    # 1) sim_drive.csv → t_min, t_max
+    drive_rows, drive_times = load_and_compute_times(DRIVE_FILE)
+    if not drive_rows:
+        print(f"Hiba: sim_drive.csv üres vagy hiányzik: {DRIVE_FILE}")
+        return
+    t_min, t_max = min(drive_times), max(drive_times)
+    print(f"Drive időablak: {t_min:.3f} … {t_max:.3f} s")
 
-    if args.method == 'manual':
-        # Compute absolute window from odom.csv reference
-        ref = pd.read_csv(raw_dir / 'odom.csv')
-        base = ref['sec'].iloc[0] + ref['nanosec'].iloc[0] * 1e-9
-        t0_abs = base + args.t_min
-        t1_abs = base + args.t_max
-        print(f"Manual window: {args.t_min}s–{args.t_max}s -> {t0_abs:.3f}s–{t1_abs:.3f}s")
-    else:
-        t0_abs, t1_abs = detect_time_window_imu(raw_dir / 'imu.csv', args.j_threshold)
-        print(f"IMU window: {t0_abs:.3f}s–{t1_abs:.3f}s (jerk_th={args.j_threshold})")
+    # 2) sim_odom szűrése
+    odom_rows, odom_times = load_and_compute_times(ODOM_FILE)
+    odom_filt = filter_rows(odom_rows, odom_times, t_min, t_max)
+    write_csv(ODOM_OUT, odom_filt)
 
-    # Process each CSV
-    for fname in ['odom.csv', 'imu.csv', 'joint_states.csv', 'drive.csv']:
-        path = raw_dir / fname
-        if not path.exists():
-            print(f"[!] Missing file: {path}")
-            continue
-        count = filter_csv(path, filtered_dir, t0_abs, t1_abs)
-        print(f"[✓] {fname}: {count} rows -> {filtered_dir / ('filtered_' + fname)}")
+    # 3) sim_tf szűrése
+    tf_rows, tf_times = load_and_compute_times(TF_FILE)
+    tf_filt = filter_rows(tf_rows, tf_times, t_min, t_max)
+    write_csv(TF_OUT, tf_filt)
 
 if __name__ == '__main__':
     main()

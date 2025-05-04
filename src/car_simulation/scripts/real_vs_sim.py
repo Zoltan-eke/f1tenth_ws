@@ -41,6 +41,6 @@ def main(real_path, sim_path):
 
 if __name__ == '__main__':
     # fájlok útvonala
-    real_csv = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/simulated/real_odom.csv'
+    real_csv = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/filtered/odom.csv'
     sim_csv  = '/home/ezo/f1tenth_ws/src/data_logger/logged_file/simulated/sim_odom.csv'
     main(real_csv, sim_csv)

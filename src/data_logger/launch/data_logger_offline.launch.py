@@ -5,18 +5,18 @@ Launch file for F1TENTH car_simulation with xacro argument support.
 import os
 import glob
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, TimerAction, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, TimerAction, ExecuteProcess, RegisterEventHandler, Shutdown
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from launch.event_handlers import OnProcessExit
 
+WORKSPACE_ROOT = os.path.expanduser('~/f1tenth_ws')
+BAGS_DIR       = os.path.join(WORKSPACE_ROOT,'bags')
 
 def find_latest_bag_dir():
-    base = os.path.expanduser('~/f1tenth_ws/src/car_simulation/bags')
-    subdirs = [d for d in glob.glob(os.path.join(base, '*')) if os.path.isdir(d)]
-    if not subdirs:
-        raise FileNotFoundError(f"No bag directories found in {base}")
-    return sorted(subdirs, key=os.path.getmtime, reverse=True)[0]
-
+    subs = [d for d in glob.glob(f"{BAGS_DIR}/*") if os.path.isdir(d)]
+    return max(subs, key=os.path.getmtime)
 
 def generate_launch_description():
     # 1) Declare launch argument for xacro model path
@@ -35,7 +35,7 @@ def generate_launch_description():
         parameters=[
             {
                 'robot_description': Command([
-                    'xacro', LaunchConfiguration('model')
+                    'xacro ', LaunchConfiguration('model')
                 ])
             },
             {'use_sim_time': True}
@@ -52,20 +52,12 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 4) Forward /drive to /ackermann_cmd
-    drive_replay = Node(
-        package='car_simulation',
-        executable='drive_replay',
-        name='drive_replay',
-        output='screen',
-        parameters=[{'use_sim_time': True}]
+    filtered_dir = os.path.expanduser(
+        '~/f1tenth_ws/src/data_logger/logged_file/filtered'
     )
+    os.makedirs(filtered_dir, exist_ok=True)
 
-    # 5) Save simulated odom to simulated folder
-    simulated_dir = os.path.expanduser(
-        '~/f1tenth_ws/src/data_logger/logged_file/simulated'
-    )
-    os.makedirs(simulated_dir, exist_ok=True)
+    # 4) Save odom to filtered folder after the bag is played
     save_odom = Node(
         package='data_logger',
         executable='save_odom',
@@ -73,14 +65,57 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'use_sim_time': True},
-            {'output_dir': simulated_dir}
+            {'output_dir': filtered_dir}
         ]
+    )
+
+    # 5) Save tf to filtered folder after the bag is played
+    save_tf = Node(
+        package='data_logger',
+        executable='save_tf',
+        name='save_tf',
+        output='screen',
+        parameters=[
+            {'use_sim_time': True},
+            {'output_dir': filtered_dir}
+        ]
+    )
+
+    # 6) Save ackermann_cmd to filtered folder after the bag is played
+    save_ackermann_cmd = Node(
+        package='data_logger',
+        executable='save_ackermann_cmd',
+        name='save_ackermann_cmd',
+        output='screen',
+        parameters=[
+            {'use_sim_time': True},
+            {'ackermann_cmd_topic': '/drive'},
+            {'output_dir': filtered_dir},
+        ]
+    )
+    
+    # 7) Save IMU data to filtered folder after the bag is played
+    # Note: The IMU topic is hardcoded to '/sensors/imu/raw' in the save_imu node
+    save_imu = Node(
+        package='data_logger',
+        executable='save_imu',
+        name='save_imu',
+        parameters=[
+        {'use_sim_time': True},
+        {'imu_topic': '/sensors/imu/raw'},
+        {'output_dir': filtered_dir},
+        {'output_filename': 'imu.csv'}
+        ]
+    )
+
+    shutdown_handler = RegisterEventHandler(
+        OnProcessExit(target_action=rosbag_play, on_exit=[Shutdown()])
     )
 
     return LaunchDescription([
         declare_model_arg,
         TimerAction(period=0.5, actions=[robot_state_publisher]),
-        TimerAction(period=1.0, actions=[rosbag_play]),
-        TimerAction(period=1.2, actions=[drive_replay]),
-        TimerAction(period=1.5, actions=[save_odom]),
+        TimerAction(period=0.5, actions=[rosbag_play]),
+        TimerAction(period=2.0, actions=[save_odom, save_tf, save_ackermann_cmd, save_imu]),
+        shutdown_handler
     ])

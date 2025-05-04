@@ -1,59 +1,71 @@
 #!/usr/bin/env python3
-import rclpy
+
+import os, csv, rclpy
 from rclpy.node import Node
 from ackermann_msgs.msg import AckermannDriveStamped
-import csv
 
 class SaveAckermannCmd(Node):
     def __init__(self):
-        # Node name should match the launch-executable
-        super().__init__('save_drive_cmd')
+        super().__init__('save_ackermann_cmd')
 
-        # Parameters for topic and output file
-        ack_topic_param = self.declare_parameter('ackermann_cmd_topic', '/drive')
-        output_file_param = self.declare_parameter('output_file', 'drive.csv')
+        # Enable simulated time
+        from rclpy.exceptions import ParameterAlreadyDeclaredException
+        try:
+            self.declare_parameter('use_sim_time', True)
+        except ParameterAlreadyDeclaredException:
+            pass
 
-        ack_topic = ack_topic_param.get_parameter_value().string_value
-        output_file = output_file_param.get_parameter_value().string_value
+        # Which topic to log (bag /drive or sim /sim_drive)
+        self.declare_parameter('ackermann_cmd_topic', '/drive')
+        self.declare_parameter('output_dir', '')
+        self.declare_parameter('output_filename', 'drive.csv')
 
-        # Subscribe to AckermannDriveStamped topic
-        self.sub = self.create_subscription(
+        topic    = self.get_parameter('ackermann_cmd_topic')\
+                           .get_parameter_value().string_value
+        out_dir  = self.get_parameter('output_dir')\
+                           .get_parameter_value().string_value
+        filename = self.get_parameter('output_filename')\
+                           .get_parameter_value().string_value
+
+        if not out_dir:
+            raise RuntimeError("output_dir parameter is required")
+        os.makedirs(out_dir, exist_ok=True)
+
+        self.filepath = os.path.join(out_dir, filename)
+        self.get_logger().info(f"Logging '{topic}' into: {self.filepath}")
+
+        # Open CSV and write header
+        self.csvfile = open(self.filepath, 'w', newline='')
+        self._writer = csv.writer(self.csvfile)
+        self._writer.writerow(['sec', 'nanosec', 'speed', 'steering_angle'])
+
+        # Subscribe to the chosen topic
+        self._sub = self.create_subscription(
             AckermannDriveStamped,
-            ack_topic,
-            self.cb,
+            topic,
+            self._cb,
             10
         )
 
-        # Open CSV file and write header
-        self.csvfile = open(output_file, 'w', newline='')
-        self.writer = csv.writer(self.csvfile)
-        self.writer.writerow(['sec', 'nanosec', 'speed', 'steering_angle'])
+    def _cb(self, msg: AckermannDriveStamped):
+        now   = self.get_clock().now().to_msg()
+        sec   = now.sec
+        nsec  = now.nanosec
+        speed = msg.drive.speed
+        steer = msg.drive.steering_angle
 
-    def cb(self, msg: AckermannDriveStamped):
-        # Always use the ROS clock for timestamp, ignoring msg.header
-        now = self.get_clock().now().to_msg()
-        sec = now.sec
-        nanosec = now.nanosec
-
-        # Write timestamp and command values to CSV
-        self.writer.writerow([
-            sec,
-            nanosec,
-            msg.drive.speed,
-            msg.drive.steering_angle
-        ])
+        self._writer.writerow([sec, nsec, speed, steer])
+        self.csvfile.flush()
 
     def destroy_node(self):
-        # Ensure the CSV file is closed
         try:
             self.csvfile.close()
         except Exception:
             pass
         super().destroy_node()
 
-
-def main():
-    rclpy.init()
+def main(args=None):
+    rclpy.init(args=args)
     node = SaveAckermannCmd()
     try:
         rclpy.spin(node)
