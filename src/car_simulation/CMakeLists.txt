@@ -37,6 +37,10 @@ install(DIRECTORY
 install(PROGRAMS
     scripts/ackermann_to_odom.py
     scripts/drive_replay.py
+    scripts/vehicle_model_node.py
+    scripts/leader_position_publisher.py
+    scripts/spawn_f1tenth_vehicle.py
+    scripts/spawn_f1tenth_vehicle_debug.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
