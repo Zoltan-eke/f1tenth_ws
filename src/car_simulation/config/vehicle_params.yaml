@@ -1,0 +1,26 @@
+open_loop_cmd_publisher:
+  ros__parameters:
+    wheel_base:       2.875
+    max_speed:        5.0
+    max_steer:        0.5
+
+
+vehicle_model_node:
+  ros__parameters:
+    # statikus fizikai tulajdonságok
+    mass:             1845.0           # kg
+    drag_coefficient: 0.219             # –
+    cog_z:            0.30             # m (abs érték)
+
+    # geometriabeli paraméterek (Tesla Model 3 specifikáció)
+    wheelbase_front:  1.4375           # m
+    wheelbase_rear:   1.4375           # m
+    wheel_base:       2.875            # m
+
+    # kerék- és tapadási paraméterek
+    wheel_radius:     0.37             # m
+    tire_friction:    3.5              # –
+
+    # safe-distance braking params
+    headway_time:     0.5              # s
+    min_distance:     0.2              # m
