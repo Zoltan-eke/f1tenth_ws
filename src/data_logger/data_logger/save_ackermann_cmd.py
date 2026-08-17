@@ -48,9 +48,8 @@ class SaveAckermannCmd(Node):
         )
 
     def _cb(self, msg: AckermannDriveStamped):
-        now   = self.get_clock().now().to_msg()
-        sec   = now.sec
-        nsec  = now.nanosec
+        sec   = msg.header.stamp.sec
+        nsec  = msg.header.stamp.nanosec
         speed = msg.drive.speed
         steer = msg.drive.steering_angle
 

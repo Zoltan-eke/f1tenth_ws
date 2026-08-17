@@ -5,31 +5,30 @@ import subprocess, yaml, tempfile, os, numpy as np
 B_vals = np.linspace(5.0, 20.0, 5)
 C_vals = np.linspace(1.5, 2.5, 5)
 
-# 2) Fix C_lin, D értékek
-C_lin = 150.0
-D     = 10.0
-
 best = {'score': 1e9, 'B': None, 'C': None}
 
-# 3) YAML útvonala
+# 2) YAML útvonala
 YAML_PATH = os.path.expanduser('~/f1tenth_ws/src/car_description/config/params.yaml')
 
 for B in B_vals:
     for C in C_vals:
-        # 4) Paraméterek frissítése,
-        # kiolvassuk, módosítjuk, és ideiglenesen átírjuk
+        # 3) Paraméterek frissítése: a master YAML-t (beágyazott
+        # <namespace>: -> ros__parameters: struktúra) frissen beolvassuk,
+        # csak B/C-t írjuk felül, C_lin/D a masterben aktuálisan
+        # kalibrált értéken marad
         with open(YAML_PATH) as f:
             cfg = yaml.safe_load(f)
-        rp = cfg.setdefault('ros__parameters', {})
-        rp.update({'B': float(B), 'C': float(C),
-                   'C_lin': float(C_lin), 'D': float(D)})
+        ns = next(iter(cfg))
+        rp = cfg[ns]['ros__parameters']
+        rp['B'] = float(B)
+        rp['C'] = float(C)
 
         # ideiglenesen írjunk ki egy temp YAML-t
         tmp = tempfile.NamedTemporaryFile('w', delete=False, suffix='.yaml')
         yaml.safe_dump(cfg, tmp)
         tmp.flush(); tmp.close()
 
-        # 5) lefuttatjuk az offline_validation-t
+        # 4) lefuttatjuk az offline_validation-t
         cmd = [
             'python3', 'offline_validation.py',
             '--params', tmp.name, '--no-plot'
@@ -53,11 +52,21 @@ for B in B_vals:
 
         os.unlink(tmp.name)
 
-# 6) Legjobb megtalálása és params.yaml frissítése
+# 5) Legjobb megtalálása és params.yaml frissítése
 print("=== BEST ===", best)
+
+# --- szél-ellenőrzés: az optimum a keresési tartomány szélén van-e ---
+if np.isclose(best['B'], B_vals.min()) or np.isclose(best['B'], B_vals.max()):
+    print(f"[WARNING] B optimuma a keresési tartomány szélén van (B={best['B']:.2f}, "
+          f"tartomány=[{B_vals.min():.2f}, {B_vals.max():.2f}]) — érdemes szélesíteni a rácsot.")
+if np.isclose(best['C'], C_vals.min()) or np.isclose(best['C'], C_vals.max()):
+    print(f"[WARNING] C optimuma a keresési tartomány szélén van (C={best['C']:.2f}, "
+          f"tartomány=[{C_vals.min():.2f}, {C_vals.max():.2f}]) — érdemes szélesíteni a rácsot.")
+
 with open(YAML_PATH) as f:
     cfg = yaml.safe_load(f)
-rp = cfg.setdefault('ros__parameters', {})
+ns = next(iter(cfg))
+rp = cfg[ns]['ros__parameters']
 rp['B'] = float(best['B'])
 rp['C'] = float(best['C'])
 with open(YAML_PATH, 'w') as f:

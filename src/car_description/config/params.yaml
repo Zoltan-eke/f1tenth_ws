@@ -1,10 +1,10 @@
-follower_vehicle_model:
+/**:
   ros__parameters:
     B: 5.0
-    C: 2.25
-    C_f: 1000.0
+    C: 2.0
     C_lin: 150.0
-    C_r: 1000.0
+    Cf: 1000.0
+    Cr: 1000.0
     D: 10.0
     I_z: 0.128
     c_roll: 0.013
@@ -23,6 +23,6 @@ follower_vehicle_model:
     wheel_diameter: 0.1068
     wheel_radius: 0.0534
     wheel_width: 0.045
-    wheelbase_front: 0.063
-    wheelbase_rear: 0.252
+    wheelbase_front: 0.1575
+    wheelbase_rear: 0.1575
     width: 0.296

@@ -42,10 +42,9 @@ class TFSaver(Node):
         self.create_subscription(TFMessage, '/tf', self._tf_callback, 10)
 
     def _tf_callback(self, msg: TFMessage):
-        now = self.get_clock().now().to_msg()
         for t in msg.transforms:
             self._writer.writerow([
-                now.sec, now.nanosec,
+                t.header.stamp.sec, t.header.stamp.nanosec,
                 t.header.frame_id, t.child_frame_id,
                 t.transform.translation.x,
                 t.transform.translation.y,

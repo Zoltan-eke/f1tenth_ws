@@ -30,7 +30,6 @@ setup(
         'console_scripts': [
             'save_odom = data_logger.save_odom:main',
             'save_imu = data_logger.save_imu:main',
-            'save_joint_states = data_logger.save_joint_states:main',
             'save_ackermann_cmd = data_logger.save_ackermann_cmd:main',
             'save_tf = data_logger.save_tf:main',
         ],

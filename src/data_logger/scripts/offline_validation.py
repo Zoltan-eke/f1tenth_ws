@@ -34,7 +34,13 @@ args = parser.parse_args()
 # YAML paraméterek beolvasása
 cfg = {}
 if args.params:
-    cfg = yaml.safe_load(open(args.params, 'r')).get('ros__parameters', {})
+    raw = yaml.safe_load(open(args.params, 'r'))
+    if 'ros__parameters' in raw:
+        cfg = raw['ros__parameters']
+    else:
+        # beágyazott struktúra: <namespace/node_name>: -> ros__parameters:
+        ns = next(iter(raw))
+        cfg = raw[ns].get('ros__parameters', {})
 # geometriai
 LF   = float(cfg.get('wheelbase_front', LF))
 LR   = float(cfg.get('wheelbase_rear',  LR))
@@ -89,13 +95,12 @@ def dynamics(state, delta, dt, v_real_prev=None, v_real=None):
     F_yf_li = C_lin * alpha_f
     F_yr_li = C_lin * alpha_r
 
-    # thresh = 0.1
-    # F_yf = F_yf_li if abs(alpha_f) < thresh else F_yf_nl
-    # F_yr = F_yr_li if abs(alpha_r) < thresh else F_yr_nl
-   # force clamp: ±1e3 N körül sosem lépünk túl
-
-    F_yf = np.clip(F_yf_nl, -1e3, 1e3)
-    F_yr = np.clip(F_yr_nl, -1e3, 1e3)
+    thresh = 0.1
+    F_yf = F_yf_li if abs(alpha_f) < thresh else F_yf_nl
+    F_yr = F_yr_li if abs(alpha_r) < thresh else F_yr_nl
+    # force clamp: ±1e3 N körül sosem lépünk túl
+    F_yf = np.clip(F_yf, -1e3, 1e3)
+    F_yr = np.clip(F_yr, -1e3, 1e3)
 
     # 4) differenciálegyenletek
     psi_ddot = (LF * F_yf - LR * F_yr) / Iz

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
-import yaml, subprocess, tempfile, os, sys
+import yaml, subprocess, tempfile, os, sys, copy
 
 # --- Fájlok elérési útja ---
 MASTER = os.path.expanduser(
@@ -20,14 +20,16 @@ tmp.close()
 # Eredeti master YAML beolvasása
 with open(MASTER, 'r') as f:
     base_cfg = yaml.safe_load(f)
+NS = next(iter(base_cfg))
 
 print(f"[grid_search_tire] Master params: {MASTER}")
 
 for C_lin in C_lin_vals:
     for D in D_vals:
-        # Másoljuk a teljes konfigurációt, és írjuk felül a gumiparamétereket
-        cfg = dict(base_cfg)
-        rp  = cfg.setdefault('ros__parameters', {})
+        # Mély másolat, hogy a beágyazott ros__parameters dict ne legyen
+        # megosztott referencia iterációk között
+        cfg = copy.deepcopy(base_cfg)
+        rp  = cfg[NS]['ros__parameters']
         rp['C_lin'] = float(C_lin)
         rp['D']     = float(D)
         with open(tmp.name,'w') as f:
@@ -62,8 +64,16 @@ for C_lin in C_lin_vals:
 print("\n=== BEST ===")
 print(f"C_lin = {best['C_lin']:.1f}, D = {best['D']:.1f}, score = {best['score']:.3f}")
 
+# --- szél-ellenőrzés: az optimum a keresési tartomány szélén van-e ---
+if np.isclose(best['C_lin'], C_lin_vals.min()) or np.isclose(best['C_lin'], C_lin_vals.max()):
+    print(f"[WARNING] C_lin optimuma a keresési tartomány szélén van (C_lin={best['C_lin']:.1f}, "
+          f"tartomány=[{C_lin_vals.min():.1f}, {C_lin_vals.max():.1f}]) — érdemes szélesíteni a rácsot.")
+if np.isclose(best['D'], D_vals.min()) or np.isclose(best['D'], D_vals.max()):
+    print(f"[WARNING] D optimuma a keresési tartomány szélén van (D={best['D']:.1f}, "
+          f"tartomány=[{D_vals.min():.1f}, {D_vals.max():.1f}]) — érdemes szélesíteni a rácsot.")
+
 # Master YAML frissítése
-rp = base_cfg.setdefault('ros__parameters', {})
+rp = base_cfg[NS]['ros__parameters']
 rp['C_lin'] = float(best['C_lin'])
 rp['D']     = float(best['D'])
 with open(MASTER, 'w') as f:
